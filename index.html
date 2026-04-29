@@ -1,0 +1,956 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Clockwork Content · Short-form and long-form video, delivered like clockwork.</title>
+<meta name="description" content="Short-form and long-form video packs for creators, agencies, and small brands. You brief, we build, you post."/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #E8633A;
+    --accent2: #6B7A5A;
+    --ink: #14130F;
+    --paper: #F5F1EA;
+    --paper-soft: #EDE7DC;
+    --paper-deep: #E6DFD1;
+    --muted: #6A665C;
+    --line: rgba(20,19,15,0.10);
+    --line-soft: rgba(20,19,15,0.06);
+    --line-strong: rgba(20,19,15,0.18);
+    --shadow: 0 1px 2px rgba(20,19,15,0.04), 0 10px 30px rgba(20,19,15,0.05);
+    --shadow-lift: 0 2px 4px rgba(20,19,15,0.06), 0 20px 50px rgba(20,19,15,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 16px; line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* -------- typography -------- */
+  .serif { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
+  .mono  { font-family: 'JetBrains Mono', monospace; }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 1.6px;
+    text-transform: uppercase; color: var(--muted);
+  }
+  h1, h2, h3 { margin: 0; font-weight: 400; letter-spacing: -0.02em; }
+  p { margin: 0; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; }
+
+  /* -------- layout -------- */
+  .shell { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+  @media (max-width: 640px) { .shell { padding: 0 20px; } }
+
+  /* -------- nav -------- */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(245, 241, 234, 0.82);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 68px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: -0.2px; }
+  .brand-mark {
+    width: 30px; height: 30px; border-radius: 999px;
+    border: 1.5px solid var(--ink);
+    position: relative; flex-shrink: 0;
+  }
+  .brand-mark::before, .brand-mark::after {
+    content: ''; position: absolute; background: var(--ink);
+    left: 50%; transform-origin: bottom center;
+    border-radius: 2px;
+  }
+  .brand-mark::before { /* minute */
+    width: 1.5px; height: 10px; top: 5px;
+    transform: translateX(-50%) rotate(45deg);
+    animation: tick-minute 60s linear infinite;
+  }
+  .brand-mark::after { /* hour */
+    width: 2px; height: 7px; top: 8px;
+    transform: translateX(-50%) rotate(120deg);
+    animation: tick-hour 600s linear infinite;
+  }
+  .brand-mark-dot {
+    position: absolute; left: 50%; top: 50%;
+    width: 3px; height: 3px; border-radius: 999px;
+    background: var(--accent);
+    transform: translate(-50%, -50%);
+  }
+  @keyframes tick-minute { to { transform: translateX(-50%) rotate(405deg); } }
+  @keyframes tick-hour   { to { transform: translateX(-50%) rotate(480deg); } }
+
+  .nav-links { display: flex; align-items: center; gap: 28px; }
+  .nav-links a {
+    font-size: 14px; color: var(--muted); font-weight: 500;
+    transition: color .15s ease;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  @media (max-width: 720px) {
+    .nav-links a:not(.btn) { display: none; }
+  }
+
+  /* -------- buttons -------- */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 20px; border-radius: 999px;
+    font-size: 14px; font-weight: 600; letter-spacing: -0.1px;
+    border: 1px solid transparent;
+    transition: transform .12s ease, background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .btn-primary { background: var(--ink); color: var(--paper); }
+  .btn-primary:hover { transform: translateY(-1px); }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line-strong); }
+  .btn-ghost:hover { background: var(--paper-soft); }
+  .btn-accent { background: var(--accent); color: #fff; }
+  .btn-accent:hover { transform: translateY(-1px); }
+  .btn .arrow { transition: transform .15s ease; }
+  .btn:hover .arrow { transform: translateX(3px); }
+
+  /* -------- hero -------- */
+  .hero { padding: 100px 0 80px; position: relative; }
+  .hero-tag { margin-bottom: 24px; }
+  .hero-tag::before {
+    content: ''; display: inline-block; width: 6px; height: 6px;
+    border-radius: 999px; background: var(--accent);
+    margin-right: 10px; vertical-align: middle;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  .hero h1 {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: clamp(52px, 8vw, 104px);
+    line-height: 0.96; letter-spacing: -0.03em;
+    margin-bottom: 28px;
+    max-width: 980px;
+  }
+  .hero h1 em {
+    color: var(--accent);
+    font-style: italic;
+  }
+  .hero-sub {
+    font-size: 19px; line-height: 1.5; color: var(--muted);
+    max-width: 580px; margin-bottom: 36px;
+  }
+  .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 60px; }
+
+  /* metric strip */
+  .strip {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0; border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    margin-top: 40px;
+  }
+  .strip-item {
+    padding: 22px 18px;
+    border-right: 1px solid var(--line-soft);
+  }
+  .strip-item:last-child { border-right: none; }
+  .strip-item .k { font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); font-family: 'JetBrains Mono', monospace; margin-bottom: 6px; }
+  .strip-item .v { font-family: 'Instrument Serif', Georgia, serif; font-size: 28px; letter-spacing: -0.01em; line-height: 1; }
+  @media (max-width: 720px) {
+    .strip { grid-template-columns: repeat(2, 1fr); }
+    .strip-item { border-bottom: 1px solid var(--line-soft); }
+    .strip-item:nth-child(2n) { border-right: none; }
+    .strip-item:nth-last-child(-n+2) { border-bottom: none; }
+  }
+
+  /* -------- sections -------- */
+  section { padding: 100px 0; }
+  .section-head { margin-bottom: 56px; max-width: 720px; }
+  .section-head h2 {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: clamp(40px, 5vw, 64px);
+    line-height: 1.02; letter-spacing: -0.02em;
+    margin-top: 12px; margin-bottom: 16px;
+  }
+  .section-head p { color: var(--muted); font-size: 17px; max-width: 560px; }
+
+  /* -------- packages -------- */
+  .packages {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  }
+  @media (max-width: 980px) { .packages { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 540px) { .packages { grid-template-columns: 1fr; } }
+
+  .pack {
+    background: #fff; border: 1px solid var(--line);
+    border-radius: 18px; padding: 28px 24px 24px;
+    display: flex; flex-direction: column; gap: 18px;
+    position: relative;
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .pack:hover { transform: translateY(-3px); box-shadow: var(--shadow-lift); border-color: var(--line-strong); }
+  .pack.featured {
+    background: var(--ink); color: var(--paper);
+    border-color: var(--ink);
+  }
+  .pack.featured .pack-per { color: rgba(245,241,234,0.65); }
+  .pack.featured .pack-feat { color: rgba(245,241,234,0.88); }
+  .pack.featured .pack-feat::before { background: var(--accent); }
+  .pack.featured .btn-ghost { color: var(--paper); border-color: rgba(245,241,234,0.3); }
+  .pack.featured .btn-ghost:hover { background: rgba(255,255,255,0.08); }
+
+  .pack-badge {
+    position: absolute; top: 16px; right: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase;
+    padding: 4px 8px; border-radius: 999px;
+    background: var(--accent); color: #fff;
+  }
+  .pack-num {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 72px; line-height: 0.9; letter-spacing: -0.03em;
+  }
+  .pack-num-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase;
+    color: var(--muted); margin-top: 2px;
+  }
+  .pack.featured .pack-num-label { color: rgba(245,241,234,0.6); }
+  .pack-price {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 36px; line-height: 1; letter-spacing: -0.02em;
+    display: flex; align-items: baseline; gap: 6px;
+  }
+  .pack-price span { font-size: 16px; color: var(--muted); font-family: 'Inter', system-ui; font-weight: 500; }
+  .pack.featured .pack-price span { color: rgba(245,241,234,0.6); }
+  .pack-per {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted);
+    letter-spacing: 0.4px;
+  }
+  .pack-feats {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 8px;
+    flex: 1;
+  }
+  .pack-feat {
+    font-size: 14px; color: var(--ink); display: flex; gap: 10px; align-items: flex-start;
+  }
+  .pack-feat::before {
+    content: ''; display: block; flex-shrink: 0;
+    width: 14px; height: 14px; border-radius: 999px;
+    background: var(--paper-deep);
+    margin-top: 2px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'><path d='M2 5l2 2 4-4' stroke='%2314130F' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-size: 10px; background-repeat: no-repeat; background-position: center;
+  }
+  .pack.featured .pack-feat::before { background-color: var(--accent); background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'><path d='M2 5l2 2 4-4' stroke='white' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>"); }
+  .pack .btn { justify-content: center; width: 100%; }
+
+  /* -------- how it works -------- */
+  .how { background: var(--paper-soft); }
+  .steps {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+    border-top: 1px solid var(--line);
+  }
+  @media (max-width: 820px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .steps { grid-template-columns: 1fr; } }
+  .step {
+    padding: 32px 24px 28px;
+    border-right: 1px solid var(--line-soft);
+    border-bottom: 1px solid var(--line-soft);
+    position: relative;
+  }
+  .step:last-child { border-right: none; }
+  @media (max-width: 820px) {
+    .step:nth-child(2n) { border-right: none; }
+  }
+  .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 1.6px; color: var(--accent);
+    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .step-num::after {
+    content: ''; height: 1px; flex: 1; background: var(--line);
+  }
+  .step h3 {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 30px; line-height: 1.05; margin-bottom: 12px;
+  }
+  .step p { font-size: 14px; color: var(--muted); line-height: 1.55; }
+
+  /* -------- who it's for -------- */
+  .audiences {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  }
+  @media (max-width: 820px) { .audiences { grid-template-columns: 1fr; } }
+  .audience {
+    padding: 32px 28px; border: 1px solid var(--line); border-radius: 18px;
+    background: #fff;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .audience-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: var(--paper-deep);
+    display: grid; place-items: center;
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 24px; color: var(--ink);
+    font-style: italic;
+  }
+  .audience h3 {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 28px; letter-spacing: -0.01em;
+  }
+  .audience p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  /* -------- FAQ -------- */
+  .faq-grid { display: grid; grid-template-columns: 280px 1fr; gap: 60px; }
+  @media (max-width: 820px) { .faq-grid { grid-template-columns: 1fr; gap: 40px; } }
+  .faq-list { border-top: 1px solid var(--line); }
+  .faq-item {
+    border-bottom: 1px solid var(--line);
+    padding: 20px 0;
+  }
+  .faq-q {
+    width: 100%; background: none; border: none; padding: 0;
+    display: flex; justify-content: space-between; align-items: center; gap: 20px;
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 22px; letter-spacing: -0.01em; color: var(--ink);
+    text-align: left;
+  }
+  .faq-q::after {
+    content: '+'; font-family: 'JetBrains Mono', monospace;
+    font-size: 20px; color: var(--muted);
+    transition: transform .2s ease;
+    flex-shrink: 0;
+  }
+  .faq-item.open .faq-q::after { transform: rotate(45deg); }
+  .faq-a {
+    max-height: 0; overflow: hidden;
+    transition: max-height .25s ease, padding .25s ease;
+    color: var(--muted); font-size: 15px; line-height: 1.6;
+  }
+  .faq-item.open .faq-a { max-height: 300px; padding-top: 12px; }
+
+  /* -------- order form -------- */
+  .order { background: var(--ink); color: var(--paper); }
+  .order .section-head h2 { color: var(--paper); }
+  .order .section-head p { color: rgba(245,241,234,0.65); }
+  .order .eyebrow { color: rgba(245,241,234,0.5); }
+
+  .order-form {
+    display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px;
+    align-items: start;
+  }
+  @media (max-width: 820px) { .order-form { grid-template-columns: 1fr; gap: 32px; } }
+
+  .form-block { display: flex; flex-direction: column; gap: 22px; }
+
+  .field {
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .field-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase;
+    color: rgba(245,241,234,0.55);
+  }
+  .field-label .req { color: var(--accent); }
+  .input, .textarea {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(245,241,234,0.15);
+    border-radius: 10px;
+    padding: 13px 14px;
+    color: var(--paper);
+    font-family: 'Inter', system-ui;
+    font-size: 15px;
+    transition: border-color .15s ease, background .15s ease;
+    outline: none;
+  }
+  .input:focus, .textarea:focus {
+    border-color: var(--accent);
+    background: rgba(255,255,255,0.06);
+  }
+  .input::placeholder, .textarea::placeholder { color: rgba(245,241,234,0.35); }
+  .textarea { resize: vertical; min-height: 110px; font-family: 'Inter', system-ui; }
+
+  /* package radio cards */
+  .pack-picker {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+  }
+  .pack-pick {
+    position: relative;
+    border: 1px solid rgba(245,241,234,0.15);
+    border-radius: 12px;
+    padding: 14px 14px;
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease;
+    background: rgba(255,255,255,0.02);
+  }
+  .pack-pick:hover { border-color: rgba(245,241,234,0.3); }
+  .pack-pick input { position: absolute; opacity: 0; pointer-events: none; }
+  .pack-pick input:checked + .pack-pick-body {
+    /* handled on parent */
+  }
+  .pack-pick:has(input:checked) {
+    border-color: var(--accent);
+    background: rgba(232,99,58,0.08);
+  }
+  .pack-pick-top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 4px;
+  }
+  .pack-pick-n {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 28px; line-height: 1; letter-spacing: -0.01em;
+  }
+  .pack-pick-price {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; color: var(--paper); font-weight: 500;
+  }
+  .pack-pick-sub {
+    font-size: 12px; color: rgba(245,241,234,0.5);
+  }
+
+  .submit-row { display: flex; flex-direction: column; gap: 14px; margin-top: 8px; }
+  .submit-btn {
+    background: var(--accent); color: #fff;
+    border: none; border-radius: 999px;
+    padding: 15px 24px; font-size: 15px; font-weight: 600;
+    letter-spacing: -0.1px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    cursor: pointer;
+    transition: transform .12s ease, background .15s ease;
+  }
+  .submit-btn:hover { transform: translateY(-1px); background: #f17043; }
+  .submit-btn:disabled { opacity: 0.6; cursor: wait; transform: none; }
+  .legal { font-size: 12px; color: rgba(245,241,234,0.5); line-height: 1.5; }
+
+  /* order summary */
+  .summary {
+    border: 1px solid rgba(245,241,234,0.12);
+    border-radius: 16px;
+    padding: 28px;
+    background: rgba(255,255,255,0.02);
+    position: sticky; top: 88px;
+  }
+  .summary h3 {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 24px; margin-bottom: 20px;
+  }
+  .summary-line {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(245,241,234,0.08);
+    font-size: 14px;
+  }
+  .summary-line:last-of-type { border-bottom: none; }
+  .summary-line .k { color: rgba(245,241,234,0.6); }
+  .summary-line .v { font-family: 'JetBrains Mono', monospace; }
+  .summary-total {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-top: 16px; padding-top: 16px;
+    border-top: 1px solid rgba(245,241,234,0.2);
+  }
+  .summary-total .k {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase;
+    color: rgba(245,241,234,0.55);
+  }
+  .summary-total .v {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 36px; letter-spacing: -0.02em;
+  }
+  .summary-note { font-size: 12px; color: rgba(245,241,234,0.45); margin-top: 16px; line-height: 1.5; }
+
+  /* success overlay */
+  .thanks {
+    display: none;
+    padding: 48px 32px; border-radius: 18px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(245,241,234,0.15);
+    text-align: center;
+  }
+  .thanks.show { display: block; }
+  .thanks-mark {
+    width: 56px; height: 56px; border-radius: 999px;
+    background: var(--accent);
+    display: grid; place-items: center;
+    margin: 0 auto 22px;
+    color: #fff;
+  }
+  .thanks h3 {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 36px; letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .thanks p { color: rgba(245,241,234,0.65); max-width: 420px; margin: 0 auto; font-size: 15px; }
+
+  /* -------- footer -------- */
+  footer {
+    padding: 48px 0 40px; border-top: 1px solid var(--line);
+    font-size: 13px; color: var(--muted);
+  }
+  .foot {
+    display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;
+  }
+
+  /* reveal animation */
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.on { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="shell nav-inner">
+    <a href="#" class="brand">
+      <span class="brand-mark"><span class="brand-mark-dot"></span></span>
+      Clockwork Content
+    </a>
+    <nav class="nav-links">
+      <a href="#packages">Packages</a>
+      <a href="long-form.html">Long-form</a>
+      <a href="high-volume.html">High-volume</a>
+      <a href="work.html">Our work</a>
+      <a href="#how">How it works</a>
+      <a href="#faq">FAQ</a>
+      <a href="careers.html">Careers</a>
+      <a href="#order" class="btn btn-primary">Order</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero shell">
+  <div class="eyebrow hero-tag reveal">Short-form video · On schedule</div>
+  <h1 class="reveal">Short-form video, delivered like <em>clockwork.</em></h1>
+  <p class="hero-sub reveal">Short-form and long-form video packs for creators, agencies, and small brands. You brief us once. We draft the scripts, cut the footage, burn the captions, provide standard narration, and send you posting-ready MP4s.</p>
+  <div class="hero-cta reveal">
+    <a href="#packages" class="btn btn-primary">See packages <span class="arrow">→</span></a>
+    <a href="#how" class="btn btn-ghost">How it works</a>
+  </div>
+
+  <div class="strip reveal">
+    <div class="strip-item"><div class="k">Turnaround</div><div class="v">48h</div></div>
+    <div class="strip-item"><div class="k">Format</div><div class="v">9:16</div></div>
+    <div class="strip-item"><div class="k">Revisions</div><div class="v">Free</div></div>
+    <div class="strip-item"><div class="k">Ownership</div><div class="v">Yours</div></div>
+  </div>
+</section>
+
+<!-- PACKAGES -->
+<section id="packages" class="shell">
+  <div class="section-head reveal">
+    <div class="eyebrow">Packages</div>
+    <h2>Pick a pack. Get it posted.</h2>
+    <p>Every pack includes scripting, voiceover, captions, b-roll, and final rendering. Bigger packs unlock a lower per-video rate.</p>
+  </div>
+
+  <div class="packages">
+    <!-- 10 -->
+    <div class="pack reveal">
+      <div>
+        <div class="pack-num">10</div>
+        <div class="pack-num-label">videos</div>
+      </div>
+      <div>
+        <div class="pack-price">£120<span>/pack</span></div>
+        <div class="pack-per">£12.00 per video</div>
+      </div>
+      <ul class="pack-feats">
+        <li class="pack-feat">Scripting + standard narration</li>
+        <li class="pack-feat">Captions + b-roll</li>
+        <li class="pack-feat">48 to 72h first delivery</li>
+        <li class="pack-feat">Three revisions</li>
+      </ul>
+      <button class="btn btn-ghost" data-pack="10">Choose pack</button>
+    </div>
+
+    <!-- 20 -->
+    <div class="pack reveal">
+      <div>
+        <div class="pack-num">20</div>
+        <div class="pack-num-label">videos</div>
+      </div>
+      <div>
+        <div class="pack-price">£210<span>/pack</span></div>
+        <div class="pack-per">£10.50 per video</div>
+      </div>
+      <ul class="pack-feats">
+        <li class="pack-feat">Everything in the 10-pack</li>
+        <li class="pack-feat">Three revisions</li>
+        <li class="pack-feat">Custom thumbnail options</li>
+        <li class="pack-feat">Rolling delivery</li>
+      </ul>
+      <button class="btn btn-ghost" data-pack="20">Choose pack</button>
+    </div>
+
+    <!-- 30 -->
+    <div class="pack featured reveal">
+      <div class="pack-badge">Most popular</div>
+      <div>
+        <div class="pack-num">30</div>
+        <div class="pack-num-label">videos</div>
+      </div>
+      <div>
+        <div class="pack-price">£300<span>/pack</span></div>
+        <div class="pack-per">£10.00 per video</div>
+      </div>
+      <ul class="pack-feats">
+        <li class="pack-feat">Everything in the 20-pack</li>
+        <li class="pack-feat">Three revisions</li>
+        <li class="pack-feat">Brand kit applied to every cut</li>
+        <li class="pack-feat">Daily rolling delivery</li>
+      </ul>
+      <button class="btn btn-accent" data-pack="30">Choose pack</button>
+    </div>
+
+    <!-- 50 -->
+    <div class="pack reveal">
+      <div class="pack-badge" style="background:var(--accent2)">Best value</div>
+      <div>
+        <div class="pack-num">50</div>
+        <div class="pack-num-label">videos</div>
+      </div>
+      <div>
+        <div class="pack-price">£400<span>/pack</span></div>
+        <div class="pack-per">£8.00 per video</div>
+      </div>
+      <ul class="pack-feats">
+        <li class="pack-feat">Everything in the 30-pack</li>
+        <li class="pack-feat">Priority queue</li>
+        <li class="pack-feat">Dedicated producer</li>
+        <li class="pack-feat">Monthly performance review</li>
+      </ul>
+      <button class="btn btn-ghost" data-pack="50">Choose pack</button>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="how">
+  <div class="shell">
+    <div class="section-head reveal">
+      <div class="eyebrow">How it works</div>
+      <h2>Four steps. No meetings.</h2>
+      <p>You fill out a brief. We do everything else. Your inbox fills with MP4s.</p>
+    </div>
+  </div>
+  <div class="shell">
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">01 · Brief</div>
+        <h3>Tell us your niche</h3>
+        <p>Pick a pack, share your sources (URL, RSS, topic brief), and drop in brand colours and fonts.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">02 · Script</div>
+        <h3>We draft, you approve</h3>
+        <p>You get hooks and scripts for every video in one batch. Approve, tweak, or reject, all in one pass.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">03 · Produce</div>
+        <h3>Voice, captions, b-roll</h3>
+        <p>We generate the voiceover, burn captions with your brand font, and match b-roll to every beat.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">04 · Deliver</div>
+        <h3>Post-ready MP4s</h3>
+        <p>1080×1920, under 60s, vertical. Drop them straight into YouTube Shorts, TikTok, or Reels.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO IT'S FOR -->
+<section class="shell">
+  <div class="section-head reveal">
+    <div class="eyebrow">Who it's for</div>
+    <h2>Built for anyone posting short-form.</h2>
+  </div>
+  <div class="audiences">
+    <div class="audience reveal">
+      <div class="audience-icon">C</div>
+      <h3>Creators</h3>
+      <p>Post daily without burning out. We handle the grind, while you stay focused on the one thing only you can do.</p>
+    </div>
+    <div class="audience reveal">
+      <div class="audience-icon">B</div>
+      <h3>Small businesses</h3>
+      <p>Turn your expertise into a content engine. One pack keeps your feed active for weeks.</p>
+    </div>
+    <div class="audience reveal">
+      <div class="audience-icon">A</div>
+      <h3>Agencies</h3>
+      <p>White-label production for your clients. Reliable throughput, your branding, our pipeline.</p>
+    </div>
+  </div>
+
+  <div style="margin-top: 48px; text-align: center;" class="reveal">
+    <a href="work.html" class="btn btn-ghost">See our work <span class="arrow">→</span></a>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="shell">
+  <div class="faq-grid">
+    <div class="reveal">
+      <div class="eyebrow">FAQ</div>
+      <h2 class="serif" style="font-size: 44px; line-height: 1.05; letter-spacing: -0.02em; margin-top: 12px;">Questions people<br>usually ask.</h2>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <button class="faq-q">How fast do I get my videos?</button>
+        <div class="faq-a">The first videos arrive within 48 to 72 hours of an approved brief or template video. Larger packs are delivered on a rolling schedule, typically 3 to 5 videos per day.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What if I don't like a video?</button>
+        <div class="faq-a">Every pack includes three revisions on the template video. We don't move on until you're happy with the template.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Who owns the videos?</button>
+        <div class="faq-a">You do. Full commercial rights, no watermarks, no credit required. Post them anywhere.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Can I supply my own script or voice?</button>
+        <div class="faq-a">Yes. You can provide a full script, a rough outline, or just a topic. Standard narration is included in every pack. Voice cloning is available as a paid extra, so the narration can sound like you.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do you handle posting?</button>
+        <div class="faq-a">By default we deliver the MP4s to you. Auto-publishing and scheduling to YouTube, TikTok, or Instagram is available as a paid extra.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How do payments work?</button>
+        <div class="faq-a">You pay for a pack, we start production, you get up to three revisions on the template video, and if you are not happy, you get 100% of your money back. Bank transfer, card payments, PayPal, and Bitcoin accepted.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ORDER -->
+<section id="order" class="order">
+  <div class="shell">
+    <div class="section-head reveal">
+      <div class="eyebrow">Order</div>
+      <h2>Start a pack.</h2>
+      <p>Tell us about your project. We reply within one working day with next steps and an invoice.</p>
+    </div>
+
+    <div class="order-form">
+      <form class="form-block" id="order-form" novalidate>
+        <div class="field">
+          <label class="field-label">Package <span class="req">*</span></label>
+          <div class="pack-picker">
+            <label class="pack-pick">
+              <input type="radio" name="pack" value="10" data-price="120"/>
+              <div class="pack-pick-top"><span class="pack-pick-n">10</span><span class="pack-pick-price">£120</span></div>
+              <div class="pack-pick-sub">£12.00 per video</div>
+            </label>
+            <label class="pack-pick">
+              <input type="radio" name="pack" value="20" data-price="210"/>
+              <div class="pack-pick-top"><span class="pack-pick-n">20</span><span class="pack-pick-price">£210</span></div>
+              <div class="pack-pick-sub">£10.50 per video</div>
+            </label>
+            <label class="pack-pick">
+              <input type="radio" name="pack" value="30" data-price="300" checked/>
+              <div class="pack-pick-top"><span class="pack-pick-n">30</span><span class="pack-pick-price">£300</span></div>
+              <div class="pack-pick-sub">£10.00 per video</div>
+            </label>
+            <label class="pack-pick">
+              <input type="radio" name="pack" value="50" data-price="400"/>
+              <div class="pack-pick-top"><span class="pack-pick-n">50</span><span class="pack-pick-price">£400</span></div>
+              <div class="pack-pick-sub">£8.00 per video</div>
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="name">Your name <span class="req">*</span></label>
+          <input class="input" id="name" name="name" type="text" placeholder="Jane Doe" required/>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="email">Email <span class="req">*</span></label>
+          <input class="input" id="email" name="email" type="email" placeholder="jane@company.com" required/>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="business">Business / channel</label>
+          <input class="input" id="business" name="business" type="text" placeholder="Optional"/>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="niche">Niche or topic <span class="req">*</span></label>
+          <input class="input" id="niche" name="niche" type="text" placeholder="e.g. AI news, UK property, personal finance" required/>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="sources">Source material</label>
+          <textarea class="textarea" id="sources" name="sources" placeholder="RSS feeds, URLs, a topic list, or 'surprise me'"></textarea>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="notes">Anything else</label>
+          <textarea class="textarea" id="notes" name="notes" placeholder="Brand colours, example videos you like, voice preferences…"></textarea>
+        </div>
+
+        <div class="submit-row">
+          <button type="submit" class="submit-btn" id="submit-btn">Send order <span class="arrow">→</span></button>
+          <div class="legal">By sending, you agree to be invoiced for the full pack. We'll reply within one working day. 100% money-back guarantee if you are not happy after three revisions on the template video.</div>
+        </div>
+      </form>
+
+      <aside>
+        <div class="summary" id="summary">
+          <h3>Order summary</h3>
+          <div class="summary-line"><span class="k">Pack</span><span class="v" id="s-pack">30 videos</span></div>
+          <div class="summary-line"><span class="k">Per video</span><span class="v" id="s-per">£10.00</span></div>
+          <div class="summary-line"><span class="k">Turnaround</span><span class="v">48 to 72h first</span></div>
+          <div class="summary-line"><span class="k">Revisions</span><span class="v" id="s-rev">Three revisions</span></div>
+          <div class="summary-total">
+            <span class="k">Total</span>
+            <span class="v" id="s-total">£300</span>
+          </div>
+          <div class="summary-note">Full 100% money-back guarantee if you are not happy after three revisions on the template video.</div>
+        </div>
+
+        <div class="thanks" id="thanks">
+          <div class="thanks-mark">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M5 11.5l4 4 8-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Order received.</h3>
+          <p id="thanks-msg">We'll reply within one working day with your invoice and a short brief form. Check your inbox, and your spam folder just in case.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="shell foot">
+    <div>© 2026 Clockwork Content. Short-form and long-form video, on schedule.</div>
+    <div><a href="#order">Start a pack</a> · <a href="mailto:hello@ClockworkContentCo.com">hello@ClockworkContentCo.com</a></div>
+  </div>
+</footer>
+
+<script>
+  // -------- reveal on scroll --------
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => io.observe(el));
+
+  // -------- FAQ accordion --------
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => q.parentElement.classList.toggle('open'));
+  });
+
+  // -------- package picker -> order form --------
+  const packMeta = {
+    '10': { price: 120, per: '£12.00', rev: 'Three revisions' },
+    '20': { price: 210, per: '£10.50', rev: 'Three revisions' },
+    '30': { price: 300, per: '£10.00', rev: 'Three revisions' },
+    '50': { price: 400, per: '£8.00',  rev: 'Three revisions' },
+  };
+
+  document.querySelectorAll('[data-pack]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const pack = btn.dataset.pack;
+      const radio = document.querySelector(`input[name="pack"][value="${pack}"]`);
+      if (radio) {
+        radio.checked = true;
+        updateSummary();
+      }
+      document.getElementById('order').scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  function updateSummary() {
+    const checked = document.querySelector('input[name="pack"]:checked');
+    if (!checked) return;
+    const pack = checked.value;
+    const meta = packMeta[pack];
+    document.getElementById('s-pack').textContent = `${pack} videos`;
+    document.getElementById('s-per').textContent = meta.per;
+    document.getElementById('s-rev').textContent = meta.rev;
+    document.getElementById('s-total').textContent = `£${meta.price}`;
+  }
+  document.querySelectorAll('input[name="pack"]').forEach(r => r.addEventListener('change', updateSummary));
+  updateSummary();
+
+  // -------- form submission --------
+  // TODO: replace this URL with your n8n webhook to receive orders.
+  const WEBHOOK_URL = ''; // e.g. 'https://your-n8n.example.com/webhook/clockwork-order'
+
+  const form = document.getElementById('order-form');
+  const submitBtn = document.getElementById('submit-btn');
+  const summary = document.getElementById('summary');
+  const thanks = document.getElementById('thanks');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // basic validation
+    const required = ['name', 'email', 'niche'];
+    for (const r of required) {
+      const el = form.elements[r];
+      if (!el.value.trim()) { el.focus(); el.style.borderColor = 'var(--accent)'; return; }
+    }
+
+    const data = {
+      pack: form.elements.pack.value,
+      price: packMeta[form.elements.pack.value].price,
+      name: form.elements.name.value.trim(),
+      email: form.elements.email.value.trim(),
+      business: form.elements.business.value.trim(),
+      niche: form.elements.niche.value.trim(),
+      sources: form.elements.sources.value.trim(),
+      notes: form.elements.notes.value.trim(),
+      submittedAt: new Date().toISOString(),
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    try {
+      if (WEBHOOK_URL) {
+        await fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+      } else {
+        // fallback: log to console until webhook is wired up
+        console.log('Order (no webhook configured):', data);
+        await new Promise(r => setTimeout(r, 600));
+      }
+      form.style.display = 'none';
+      summary.style.display = 'none';
+      thanks.classList.add('show');
+      thanks.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (err) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send order →';
+      alert('Something went wrong. Please email hello@ClockworkContentCo.com');
+    }
+  });
+</script>
+
+</body>
+</html>
