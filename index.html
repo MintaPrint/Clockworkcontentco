@@ -863,10 +863,10 @@
 
   // -------- package picker -> order form --------
   const packMeta = {
-    '10': { price: 120, per: '&pound;12.00', rev: 'Three revisions' },
-    '20': { price: 210, per: '&pound;10.50', rev: 'Three revisions' },
-    '30': { price: 300, per: '&pound;10.00', rev: 'Three revisions' },
-    '50': { price: 400, per: '&pound;8.00',  rev: 'Three revisions' },
+    '10': { price: 120, per: '\u00A312.00', rev: 'Three revisions' },
+    '20': { price: 210, per: '\u00A310.50', rev: 'Three revisions' },
+    '30': { price: 300, per: '\u00A310.00', rev: 'Three revisions' },
+    '50': { price: 400, per: '\u00A38.00',  rev: 'Three revisions' },
   };
 
   document.querySelectorAll('[data-pack]').forEach(btn => {
@@ -889,7 +889,7 @@
     document.getElementById('s-pack').textContent = `${pack} videos`;
     document.getElementById('s-per').textContent = meta.per;
     document.getElementById('s-rev').textContent = meta.rev;
-    document.getElementById('s-total').textContent = `&pound;${meta.price}`;
+    document.getElementById('s-total').textContent = `\u00A3${meta.price}`;
   }
   document.querySelectorAll('input[name="pack"]').forEach(r => r.addEventListener('change', updateSummary));
   updateSummary();
