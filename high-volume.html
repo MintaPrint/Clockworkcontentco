@@ -209,6 +209,7 @@
     .reveal { opacity: 1; transform: none; }
   }
 </style>
+<link rel="stylesheet" href="mobile-nav.css">
 </head>
 <body>
 
@@ -218,7 +219,7 @@
       <span class="brand-mark"><span class="brand-mark-dot"></span></span>
       Clockwork Content
     </a>
-    <nav class="nav-links">
+    <nav class="nav-links" id="site-navigation">
       <a href="index.html#packages">Packages</a>
       <a href="long-form.html">Long-form</a>
       <a href="high-volume.html" class="active">High-volume</a>
@@ -226,8 +227,14 @@
       <a href="index.html#how">How it works</a>
       <a href="index.html#faq">FAQ</a>
       <a href="careers.html">Careers</a>
-      <a href="index.html#order" class="btn btn-primary">Order</a>
+      <a href="index.html#order" class="btn btn-primary nav-order-desktop">Order</a>
     </nav>
+    <div class="mobile-nav-actions">
+      <a href="index.html#order" class="btn btn-primary mobile-order">Order</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" aria-label="Open navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -281,6 +288,7 @@
   </div>
 </footer>
 
+<script src="mobile-nav.js"></script>
 <script>
   const reveals = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries) => {

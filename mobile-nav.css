@@ -1,0 +1,126 @@
+.nav-links .btn-primary,
+.nav-links .btn-primary:hover {
+  color: var(--paper);
+}
+
+.mobile-nav-actions {
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-toggle {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+}
+
+.nav-toggle span {
+  display: block;
+  width: 16px;
+  height: 1.5px;
+  background: currentColor;
+  border-radius: 2px;
+  transition: transform .18s ease, opacity .18s ease;
+}
+
+@media (max-width: 720px) {
+  .nav-inner {
+    position: relative;
+    gap: 10px;
+  }
+
+  .brand {
+    min-width: 0;
+    gap: 8px;
+    font-size: 15px;
+  }
+
+  .brand-mark {
+    width: 28px;
+    height: 28px;
+  }
+
+  .nav-links {
+    display: none;
+    position: fixed;
+    top: 68px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 10px 20px 18px;
+    background: rgba(245, 241, 234, 0.98);
+    border-bottom: 1px solid var(--line);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links a,
+  .nav-links a:not(.btn) {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 4px;
+    color: var(--ink);
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .nav-links a:last-of-type {
+    border-bottom: 0;
+  }
+
+  .nav-links .nav-order-desktop {
+    display: none;
+  }
+
+  .mobile-nav-actions {
+    display: flex;
+    margin-left: auto;
+  }
+
+  .mobile-nav-actions .btn-primary,
+  .mobile-nav-actions .btn-primary:hover {
+    color: var(--paper);
+  }
+
+  .mobile-order {
+    min-height: 40px;
+    padding: 9px 14px;
+  }
+
+  .nav-toggle[aria-expanded="true"] span:nth-child(1) {
+    transform: translateY(5.5px) rotate(45deg);
+  }
+
+  .nav-toggle[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav-toggle[aria-expanded="true"] span:nth-child(3) {
+    transform: translateY(-5.5px) rotate(-45deg);
+  }
+}
+
+@media (max-width: 390px) {
+  .brand {
+    font-size: 14px;
+  }
+
+  .mobile-order {
+    padding-inline: 12px;
+  }
+}
